@@ -20,15 +20,10 @@ public class LCCallNormalizer implements Normalizer {
     @Override
     public byte[] normalize(String s)
     {
-        Log.info("Normalizing: " + s);
         try {
-            // there's a bug!
-            // https://groups.google.com/forum/#!topic/solrmarc-tech/1oXBjl4JoAU
-            // workaround is to insert a space between the class letters and numbers (not sure why this works, though).
-            //String n = CallNumUtils.getLCShelfkey(s, null);
             LCCallNumber lccn = new LCCallNumber(s);
             String n = lccn.getShelfKey();
-            Log.info("Normalized: " + lccn.toString() + " to: " + n);
+            Log.info("Normalized: " + s + " to: " + n);
             byte[] key = n.getBytes();
             //Log.info("Normalizer Returning: " + Arrays.toString(key));
             return key;
