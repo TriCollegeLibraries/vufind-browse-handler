@@ -1,25 +1,20 @@
 package org.vufind.util;
 
-import java.util.Arrays;
 import org.solrmarc.callnum.DeweyCallNumber;
-import java.lang.NullPointerException;
+import java.util.logging.Logger;
 
 public class DeweyCallNormalizer implements Normalizer {
+
     @Override
     public byte[] normalize(String s)
     {
-        try {
-            DeweyCallNumber dewey = new DeweyCallNumber(s);
-            String n = dewey.getShelfKey();
-            Utils.logInfo("Normalized: " + s + " to: " + n);
-            byte[] key = n.getBytes();
-            //Utils.logInfo("Normalizer Returning: " + Arrays.toString(key));
-            return key;
-        }
-        catch (NullPointerException E) {
-            Utils.logInfo("DeweyCallNormalizer could not return a value for " + s);
-            return null;
-        }
+        DeweyCallNumber dewey = new DeweyCallNumber(s);
+        String n = dewey.getShelfKey();
+        // TODO: remove this log message for normal operation.
+        log.info("Normalized: " + s + " to: " + n);
+        byte[] key = (n == null) ? null : n.getBytes();
+        return key;
     }
 
+    private static final Logger log = Logger.getLogger(DeweyCallNormalizer.class.getName());
 }
